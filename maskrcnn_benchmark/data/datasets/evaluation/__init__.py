@@ -2,6 +2,7 @@ from maskrcnn_benchmark.data import datasets
 
 from .coco import coco_evaluation
 from .voc import voc_evaluation
+from .balloon import balloon_evaluation
 
 
 def evaluate(dataset, predictions, output_folder, **kwargs):
@@ -22,6 +23,9 @@ def evaluate(dataset, predictions, output_folder, **kwargs):
         return coco_evaluation(**args)
     elif isinstance(dataset, datasets.PascalVOCDataset):
         return voc_evaluation(**args)
+    # using same evaluation for balloon dataset as it's in coco format
+    elif isinstance(dataset, datasets.BalloonDataset):
+        return coco_evaluation(**args)
     else:
         dataset_name = dataset.__class__.__name__
         raise NotImplementedError("Unsupported dataset type {}.".format(dataset_name))
